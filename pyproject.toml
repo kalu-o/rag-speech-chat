@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "rag-speech-chat-service"
+version = "0.1.0-dev"
+description = "End-to-end Retrieval Augmented Generation Speech Chat System"
+authors = ["Kalu U. Ogbureke <kalu.ogbureke@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "rag_speech_chat" }]
+
+[tool.poetry.scripts]
+rag_speech_chat_service = "rag_speech_chat.app:start"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+setuptools = "^69.0.3"
+uvicorn = "^0.27.1"
+fastapi = "^0.110.0"
+requests = "^2.31.0"
+langchain = "^0.2.0"
+Openai = "^1.14.1"
+langchain-community = "^0.2.0"
+pypdf = "^4.2.0"
+pycryptodome = "^3.20.0"
+sentence-transformers = "^2.7.0"
+chromadb = "^0.5.0"
+
+[tool.poetry.dev-dependencies]
+formencode = "^2.0.1"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.10.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
