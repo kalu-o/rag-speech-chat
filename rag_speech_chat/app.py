@@ -8,10 +8,10 @@ import logging
 from fastapi.middleware.cors import CORSMiddleware
 from .rag_agent import RagAgent
 
-llm_model = 'gpt-3.5-turbo'
-embeddings_model = 'all-MiniLM-L6-v2'
+llm_type = 'gpt-3.5-turbo'
+embedding_llm_type = 'all-MiniLM-L6-v2'
 
-agent_obj = RagAgent(llm_model, embeddings_model)
+agent_obj = RagAgent(llm_type, embedding_llm_type)
 rag_qa_chain =  agent_obj.build_rag_agent()
 app = FastAPI()
 

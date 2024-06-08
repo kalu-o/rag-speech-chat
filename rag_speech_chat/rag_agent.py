@@ -10,8 +10,8 @@ from dataclasses import dataclass
 
 @dataclass
 class RagAgent:
-    llm_model: str
-    embedding_model: str 
+    llm_type: str
+    embedding_llm_type: str 
     
     def load_documents(self, document_directory:str):
         loader = PyPDFDirectoryLoader(document_directory, silent_errors=True)
@@ -29,7 +29,7 @@ class RagAgent:
     
     # Create Embeddings and store in vector db
     def store_embedding(self, split_documents, persist_directory: str)-> None:
-        embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_model)
+        embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_llm_type)
         vector_db = Chroma.from_documents(
             documents = split_documents,
             embedding=embeddings,
@@ -45,7 +45,7 @@ class RagAgent:
 
     # Create Embeddings and store in vector db
     def load_embedding(self, persist_directory: str)->None:
-        embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_model)
+        embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_llm_type)
         vector_db = Chroma(
             persist_directory=persist_directory,
             embedding_function=embeddings
@@ -55,7 +55,7 @@ class RagAgent:
     
     def build_rag_agent(self, persist_directory: str='docs/chroma/'):
         vector_db = self.load_embedding(persist_directory)
-        llm = ChatOpenAI(model_name=self.llm_model, temperature=0)
+        llm = ChatOpenAI(model_name=self.llm_type, temperature=0)
 
         template = """Use the following context elements to answer the question at the end.
                         If you don't know the answer, just say you don't know and don't try to make up an answer.
