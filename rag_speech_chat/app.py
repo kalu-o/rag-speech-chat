@@ -7,12 +7,15 @@ import sys, os
 import logging
 from fastapi.middleware.cors import CORSMiddleware
 from .rag_agent import RagAgent
+from .utils import LLM_TYPE, EMBEDDING_LLM_TYPE, PERSIST_DIRECTORY, build_llm
 
-llm_type = 'gpt-3.5-turbo'
-embedding_llm_type = 'all-MiniLM-L6-v2'
+llm_type = LLM_TYPE
+embedding_llm_type = EMBEDDING_LLM_TYPE
+persist_directory = PERSIST_DIRECTORY
+llm = build_llm(llm_type)
 
 agent_obj = RagAgent(llm_type, embedding_llm_type)
-rag_qa_chain =  agent_obj.build_rag_agent()
+rag_qa_chain =  agent_obj.build_rag_agent(llm, persist_directory)
 app = FastAPI()
 
 origins = [

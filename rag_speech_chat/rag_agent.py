@@ -7,6 +7,7 @@ from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from dataclasses import dataclass
+from .utils import CHUNK_SIZE, CHUNK_OVERLAP, RETURN_SOURCE_DOCUMENTS
 
 @dataclass
 class RagAgent:
@@ -21,8 +22,8 @@ class RagAgent:
      # Split documents
     def split_documents(self, document_directory: str):
         text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size = 1500,
-        chunk_overlap = 150
+        chunk_size = CHUNK_SIZE,
+        chunk_overlap = CHUNK_OVERLAP
             )
         documents = self.load_documents(document_directory)
         return text_splitter.split_documents(documents)
@@ -53,9 +54,8 @@ class RagAgent:
         
         return vector_db
     
-    def build_rag_agent(self, persist_directory: str='docs/chroma/'):
+    def build_rag_agent(self, llm, persist_directory: str='docs/chroma/'):
         vector_db = self.load_embedding(persist_directory)
-        llm = ChatOpenAI(model_name=self.llm_type, temperature=0)
 
         template = """Use the following context elements to answer the question at the end.
                         If you don't know the answer, just say you don't know and don't try to make up an answer.
@@ -67,7 +67,7 @@ class RagAgent:
         qa_chain = RetrievalQA.from_chain_type(
                     llm,
                     retriever=vector_db.as_retriever(search_type = "mmr"),
-                    return_source_documents=True,
+                    return_source_documents=RETURN_SOURCE_DOCUMENTS,
                     chain_type_kwargs={"prompt": qa_chain_prompt}
                 )
         return qa_chain
