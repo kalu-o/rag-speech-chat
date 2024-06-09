@@ -1,5 +1,3 @@
-from langchain.tools import BaseTool
-from langchain.chat_models import ChatOpenAI
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import SentenceTransformerEmbeddings
