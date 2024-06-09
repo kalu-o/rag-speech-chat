@@ -8,10 +8,18 @@ services:
     environment:
       # api keys read from .env file in the root directory
       OPENAI_API_KEY: ${OPENAI_API_KEY}
-      OPEN_WEATHER_API_KEY: ${OPEN_WEATHER_API_KEY}
       HUGGINGFACEHUB_API_TOKEN: ${HUGGINGFACEHUB_API_TOKEN}
-      LLM: ${LLM}
+      RETURN_SOURCE_DOCUMENTS: ${RETURN_SOURCE_DOCUMENTS}
+      VECTOR_COUNT: ${VECTOR_COUNT}
+      CHUNK_SIZE: ${CHUNK_SIZE}
+      CHUNK_OVERLAP: ${CHUNK_OVERLAP}
+      PERSIST_DIRECTORY: ${PERSIST_DIRECTORY}
+      LLM_TYPE: ${LLM_TYPE}
+      EMBEDDING_LLM_TYPE: ${EMBEDDING_LLM_TYPE}
+      TEMPERATURE: ${TEMPERATURE}
     restart: unless-stopped
     ports:
       - 8000:8000
+    volumes:
+      - ./data:/data/
 
