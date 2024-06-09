@@ -7,7 +7,11 @@ from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from dataclasses import dataclass
-from .utils import CHUNK_SIZE, CHUNK_OVERLAP, RETURN_SOURCE_DOCUMENTS
+import os
+
+chunk_size = os.environ['CHUNK_SIZE'],
+chunk_overlap = os.environ['CHUNK_OVERLAP']
+return_source_documents = os.environ['RETURN_SOURCE_DOCUMENTS']
 
 @dataclass
 class RagAgent:
@@ -22,8 +26,8 @@ class RagAgent:
      # Split documents
     def split_documents(self, document_directory: str):
         text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size = CHUNK_SIZE,
-        chunk_overlap = CHUNK_OVERLAP
+        chunk_size = chunk_size,
+        chunk_overlap = chunk_overlap
             )
         documents = self.load_documents(document_directory)
         return text_splitter.split_documents(documents)
@@ -67,7 +71,7 @@ class RagAgent:
         qa_chain = RetrievalQA.from_chain_type(
                     llm,
                     retriever=vector_db.as_retriever(search_type = "mmr"),
-                    return_source_documents=RETURN_SOURCE_DOCUMENTS,
+                    return_source_documents=return_source_documents,
                     chain_type_kwargs={"prompt": qa_chain_prompt}
                 )
         return qa_chain

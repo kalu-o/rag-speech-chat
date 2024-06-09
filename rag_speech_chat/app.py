@@ -7,11 +7,11 @@ import sys, os
 import logging
 from fastapi.middleware.cors import CORSMiddleware
 from .rag_agent import RagAgent
-from .utils import LLM_TYPE, EMBEDDING_LLM_TYPE, PERSIST_DIRECTORY, build_llm
+from .utils import build_llm
 
-llm_type = LLM_TYPE
-embedding_llm_type = EMBEDDING_LLM_TYPE
-persist_directory = PERSIST_DIRECTORY
+llm_type = os.environ['LLM_TYPE']
+embedding_llm_type = os.environ['EMBEDDING_LLM_TYPE']
+persist_directory = os.environ['PERSIST_DIRECTORY']
 llm = build_llm(llm_type)
 
 agent_obj = RagAgent(llm_type, embedding_llm_type)
