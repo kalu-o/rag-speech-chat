@@ -6,6 +6,9 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from dataclasses import dataclass
 import os
+from langchain_core.documents import Document
+from typing import List
+from langchain_community.chat_models import ChatOpenAI
 
 chunk_size = os.environ['CHUNK_SIZE'],
 chunk_overlap = os.environ['CHUNK_OVERLAP']
@@ -16,13 +19,13 @@ class RagAgent:
     llm_type: str
     embedding_llm_type: str 
     
-    def load_documents(self, document_directory:str):
+    def load_documents(self, document_directory:str)->List[Document]:
         loader = PyPDFDirectoryLoader(document_directory, silent_errors=True)
         documents = loader.load()
         return documents
         
      # Split documents
-    def split_documents(self, document_directory: str):
+    def split_documents(self, document_directory: str)->List[Document]:
         text_splitter = RecursiveCharacterTextSplitter(
         chunk_size = chunk_size,
         chunk_overlap = chunk_overlap
@@ -31,10 +34,10 @@ class RagAgent:
         return text_splitter.split_documents(documents)
     
     # Create Embeddings and store in vector db
-    def store_embedding(self, split_documents, persist_directory: str)-> None:
+    def store_embedding(self, split_document:List[Document], persist_directory: str)-> None:
         embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_llm_type)
         vector_db = Chroma.from_documents(
-            documents = split_documents,
+            documents = split_document,
             embedding=embeddings,
             persist_directory=persist_directory
             )
@@ -42,12 +45,12 @@ class RagAgent:
 
     
     def create_embedding(self, document_directory: str, persist_directory: str)->None:
-        split_documents = self.split_documents(document_directory)
-        self.store_embedding(split_documents, persist_directory)
+        split_document = self.split_documents(document_directory)
+        self.store_embedding(split_document, persist_directory)
 
 
     # Create Embeddings and store in vector db
-    def load_embedding(self, persist_directory: str)->None:
+    def load_embedding(self, persist_directory: str)->Chroma:
         embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_llm_type)
         vector_db = Chroma(
             persist_directory=persist_directory,
@@ -56,7 +59,7 @@ class RagAgent:
         
         return vector_db
     
-    def build_rag_agent(self, llm, persist_directory: str='docs/chroma/'):
+    def build_rag_agent(self, llm:ChatOpenAI, persist_directory: str='docs/chroma/'):
         vector_db = self.load_embedding(persist_directory)
 
         template = """Use the following context elements to answer the question at the end.

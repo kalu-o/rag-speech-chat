@@ -3,7 +3,7 @@ import os
 
 temperature = os.environ['TEMPERATURE']
 
-def build_llm(llm_type: str):
+def build_llm(llm_type: str)->ChatOpenAI:
     llm = ChatOpenAI(model_name=llm_type, temperature=temperature)
 
     return llm
