@@ -1,9 +1,11 @@
-from langchain_community.chat_models import ChatOpenAI
 import os
 
-temperature = os.environ['TEMPERATURE']
+from langchain_community.chat_models import ChatOpenAI
 
-def build_llm(llm_type: str)->ChatOpenAI:
+temperature = os.environ["TEMPERATURE"]
+
+
+def build_llm(llm_type: str) -> ChatOpenAI:
     """Builds an llm object from an llm type.
 
     This is not limited to Openai but to other open source llms.

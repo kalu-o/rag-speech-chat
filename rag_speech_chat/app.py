@@ -1,26 +1,27 @@
 import argparse
-from typing import List, Tuple
-import uvicorn
-from fastapi import FastAPI, Response, Request, HTTPException
-from pydantic import BaseModel
-import sys, os
 import logging
+import os
+import sys
+from typing import List, Tuple
+
+import uvicorn
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
 from .rag_agent import RagAgent
 from .utils import build_llm
 
-llm_type = os.environ['LLM_TYPE']
-embedding_llm_type = os.environ['EMBEDDING_LLM_TYPE']
-persist_directory = os.environ['PERSIST_DIRECTORY']
+llm_type = os.environ["LLM_TYPE"]
+embedding_llm_type = os.environ["EMBEDDING_LLM_TYPE"]
+persist_directory = os.environ["PERSIST_DIRECTORY"]
 llm = build_llm(llm_type)
 
 agent_obj = RagAgent(llm_type, embedding_llm_type)
-rag_qa_chain =  agent_obj.build_rag_agent(llm, persist_directory)
+rag_qa_chain = agent_obj.build_rag_agent(llm, persist_directory)
 app = FastAPI()
 
-origins = [
-    "*"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -47,11 +48,13 @@ class Input(BaseModel):
         chat_input: The current chat input.
         chat_history: History used tas memory.
     """
+
     chat_input: str
     chat_history: List[Tuple[str, str]]
 
+
 @app.post("/chat")
-async def chat(chat_input: Input)->dict:
+async def chat(chat_input: Input) -> dict:
     """A chat post endpoint.
 
     Args:
@@ -64,10 +67,9 @@ async def chat(chat_input: Input)->dict:
     result = rag_qa_chain({"query": current_input})
     return {"end": True, "output": result["result"]}
 
-    
+
 def start() -> None:
-    """The start/entrypoint of service .
-    """
+    """The start/entrypoint of service ."""
     parser = argparse.ArgumentParser(description="Rag Speech Chat Service")
     parser.add_argument(
         "--host",
@@ -76,7 +78,10 @@ def start() -> None:
         help="Webservice Host (default: 0.0.0.0)",
     )
     parser.add_argument(
-        "--port", type=int, default=8000, help="Webservice port (default: 8000)"
+        "--port",
+        type=int,
+        default=8000,
+        help="Webservice port (default: 8000)",
     )
     args = parser.parse_args()
 
@@ -86,4 +91,3 @@ def start() -> None:
         port=args.port,
         log_level="info",
     )
-
