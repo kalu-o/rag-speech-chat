@@ -1,5 +1,7 @@
 from rag_agent import RagAgent
 
+"""Sample script that can be used to generate embeddings.
+"""
 document_directory = ""
 persist_directory = ""
 llm_model = 'gpt-3.5-turbo'

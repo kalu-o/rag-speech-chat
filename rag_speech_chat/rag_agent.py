@@ -16,16 +16,37 @@ return_source_documents = os.environ['RETURN_SOURCE_DOCUMENTS']
 
 @dataclass
 class RagAgent:
+    """For creating chat systems based on retrieval augmented generation.
+
+    Attributes:
+        llm_type: A string indicating llm used.
+        embedding_llm_type: A string indicating llm used for embedding.
+    """
     llm_type: str
     embedding_llm_type: str 
     
     def load_documents(self, document_directory:str)->List[Document]:
+        """Loads the pdf documents.
+
+        Args:
+            document_directory: Specifies full path to the document directory.
+
+        Returns:
+            A list of Document objects.
+        """
         loader = PyPDFDirectoryLoader(document_directory, silent_errors=True)
         documents = loader.load()
         return documents
         
-     # Split documents
     def split_documents(self, document_directory: str)->List[Document]:
+        """Recursively splits documents into chunks.
+
+        Args:
+            document_directory: Specifies full path to the document directory.
+
+        Returns:
+            A list of Document objects.
+        """
         text_splitter = RecursiveCharacterTextSplitter(
         chunk_size = chunk_size,
         chunk_overlap = chunk_overlap
@@ -33,8 +54,13 @@ class RagAgent:
         documents = self.load_documents(document_directory)
         return text_splitter.split_documents(documents)
     
-    # Create Embeddings and store in vector db
     def store_embedding(self, split_document:List[Document], persist_directory: str)-> None:
+        """Creates embeddings and stores in a vector database.
+
+        Args:
+            split_document: List of split documents.
+            persist_directory: Directory to store embeddings.
+        """
         embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_llm_type)
         vector_db = Chroma.from_documents(
             documents = split_document,
@@ -45,12 +71,26 @@ class RagAgent:
 
     
     def create_embedding(self, document_directory: str, persist_directory: str)->None:
+        """Creates embeddings from pdfs and stores in a vector database.
+
+        Args:
+            document_directory: Full path to the pdf directory.
+            persist_directory: Directory to store embeddings.
+        """
         split_document = self.split_documents(document_directory)
         self.store_embedding(split_document, persist_directory)
 
 
     # Create Embeddings and store in vector db
     def load_embedding(self, persist_directory: str)->Chroma:
+        """Loads embeddings a vector database.
+
+        Args:
+            persist_directory: Directory containing the embeddings.
+
+        Returns:
+            A vector database.
+        """
         embeddings = SentenceTransformerEmbeddings(model_name=self.embedding_llm_type)
         vector_db = Chroma(
             persist_directory=persist_directory,
@@ -60,6 +100,15 @@ class RagAgent:
         return vector_db
     
     def build_rag_agent(self, llm:ChatOpenAI, persist_directory: str='docs/chroma/'):
+        """Builds a RAG chat agent.
+
+        Args:
+            llm: The llm object.
+            persist_directory: Directory containing the embeddings.
+
+        Returns:
+            A QA chain.
+        """
         vector_db = self.load_embedding(persist_directory)
 
         template = """Use the following context elements to answer the question at the end.

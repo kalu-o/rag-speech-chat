@@ -41,17 +41,33 @@ logger.info("Initialization done! Agent is ready!")
 
 
 class Input(BaseModel):
+    """Input class made of current input and history.
+
+    Attributes:
+        chat_input: The current chat input.
+        chat_history: History used tas memory.
+    """
     chat_input: str
     chat_history: List[Tuple[str, str]]
 
 @app.post("/chat")
 async def chat(chat_input: Input)->dict:
+    """A chat post endpoint.
+
+    Args:
+        chat_input: A structure representing the current input and history.
+
+    Returns:
+        A dict of output.
+    """
     current_input = chat_input.chat_input
     result = rag_qa_chain({"query": current_input})
     return {"end": True, "output": result["result"]}
 
     
 def start() -> None:
+    """The start/entrypoint of service .
+    """
     parser = argparse.ArgumentParser(description="Rag Speech Chat Service")
     parser.add_argument(
         "--host",
