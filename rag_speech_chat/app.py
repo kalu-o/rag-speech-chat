@@ -1,11 +1,10 @@
 import argparse
 import logging
 import os
-import sys
 from typing import List, Tuple
 
 import uvicorn
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 

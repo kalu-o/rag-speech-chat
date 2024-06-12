@@ -119,9 +119,11 @@ class RagAgent:
         """
         vector_db = self.load_embedding(persist_directory)
 
-        template = """Use the following context elements to answer the question at the end.
-                        If you don't know the answer, just say you don't know and don't try to make up an answer.
-                        Use a maximum of three sentences. Keep the answer as concise as possible. Always be polite. 
+        template = """Use the following context elements to answer the
+                      question at the end. If you don't know the answer,
+                      just say you don't know and don't try to make up an
+                      answer. Use a maximum of three sentences. Keep the
+                      answer as concise as possible. Always be polite.
                     {context}
                     Question: {question}
                     Helpful Answer:"""
