@@ -1,3 +1,5 @@
+"""The RagAgent class that handles creation of embeddings and retrieval.
+"""
 import os
 from dataclasses import dataclass
 from typing import List

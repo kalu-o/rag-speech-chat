@@ -1,3 +1,5 @@
+"""This defines a single chat endpoint and the entry point of the service.
+"""
 import argparse
 import logging
 import os

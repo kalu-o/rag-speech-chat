@@ -1,3 +1,5 @@
+"""This module handles creation of llm object from type.
+"""
 import os
 
 from langchain_community.chat_models import ChatOpenAI

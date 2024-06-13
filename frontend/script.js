@@ -20,7 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
             textToSpeak.textContent = ''
             const transcript = event.results[0][0].transcript;
             recognizedText.textContent = transcript;
-            processNLU(transcript);
+            const cachedResult = getOutput(transcript);
+            if (cachedResult){
+                synthesizeSpeech(cachedResult);
+            }else{
+                processNLU(transcript);
+            }
+            
         };
 
         recognition.onerror = (event) => {
@@ -66,6 +72,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(speech);
+      }
+
+      // Function to cache result
+      function cacheOutput(inputStr, outputStr) {
+          localStorage.setItem(inputStr, outputStr);
+      }
+
+      // Function to retrieve the cached results
+      function getOutput(inputStr) {
+          const outputStr = localStorage.getItem(inputStr);
+          if (outputStr === null) {
+              return null;
+          } else {
+              return outputStr;
+          }
       }
 });
 
