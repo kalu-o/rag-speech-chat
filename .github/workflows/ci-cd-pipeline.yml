@@ -73,6 +73,7 @@ jobs:
           LLM_TYPE: "gpt-3.5-turbo"
           EMBEDDING_LLM_TYPE: "all-MiniLM-L6-v2"
           TEMPERATURE: "0.01"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       - name: Upload Test Reports
         uses: actions/upload-artifact@v3
         with:
