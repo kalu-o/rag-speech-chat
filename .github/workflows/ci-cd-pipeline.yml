@@ -65,6 +65,14 @@ jobs:
           poetry run pytest --verbose --junit-xml=junit.xml --cov --cov-report=xml test/unit_test.py
         env:
           DEBIAN_FRONTEND: noninteractive
+          RETURN_SOURCE_DOCUMENTS: True
+          VECTOR_COUNT: "2"
+          CHUNK_SIZE: "1500"
+          CHUNK_OVERLAP: "150"
+          PERSIST_DIRECTORY: "/data/chroma"
+          LLM_TYPE: "gpt-3.5-turbo"
+          EMBEDDING_LLM_TYPE: "all-MiniLM-L6-v2"
+          TEMPERATURE: "0.01"
       - name: Upload Test Reports
         uses: actions/upload-artifact@v3
         with:
