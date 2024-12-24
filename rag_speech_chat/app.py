@@ -6,7 +6,7 @@ import os
 from typing import List, Tuple
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -68,6 +68,12 @@ async def chat(chat_input: Input) -> dict:
     result = rag_qa_chain({"query": current_input})
     return {"end": True, "output": result["result"]}
 
+
+@app.get("/status")
+def status():
+    return Response(
+        content="App is up and running!"
+    )
 
 def start() -> None:
     """The start/entrypoint of service ."""
