@@ -15,11 +15,10 @@ from .utils import build_llm
 
 llm_type = os.environ["LLM_TYPE"]
 embedding_llm_type = os.environ["EMBEDDING_LLM_TYPE"]
-persist_directory = os.environ["PERSIST_DIRECTORY"]
 llm = build_llm(llm_type)
 
 agent_obj = RagAgent(llm_type, embedding_llm_type)
-rag_qa_chain = agent_obj.build_rag_agent(llm, persist_directory)
+rag_qa_chain = agent_obj.build_rag_agent(llm)
 app = FastAPI()
 
 origins = ["*"]
