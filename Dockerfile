@@ -9,7 +9,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 WORKDIR /app
 
-COPY requirements.txt dist/rag_speech_chat_service-*.whl /app/
+COPY requirements.txt dist/rag_speech_chat_service-*.whl data/chroma/ /app/
 
 RUN pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir --no-deps --find-links . rag_speech_chat_service
