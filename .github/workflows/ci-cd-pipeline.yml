@@ -105,7 +105,9 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/rag-speech-chat:latest
       - name: Authenticate GCP
         if: inputs.deployment_target == 'gcp'
-        run: echo "${{ secrets.GCP_KEY }}" | gcloud auth activate-service-account --key-file=-
+        run: |
+          echo "${{ secrets.GCP_KEY }}" > gcp-key.json
+          gcloud auth activate-service-account --key-file=gcp-key.json
       - name: Build and Push to GCP Artifact Registry
         if: inputs.deployment_target == 'gcp'
         run: |
