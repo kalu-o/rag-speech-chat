@@ -108,7 +108,7 @@ class RagAgent:
         return vector_db
 
     def build_rag_agent(
-        self, llm: ChatOpenAI, persist_directory: str = "docs/chroma/"
+        self, llm: ChatOpenAI, persist_directory: str = "/app"
     ):
         """Builds a RAG chat agent.
 
