@@ -7,6 +7,12 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: 'Deployment target (dockerhub or gcp)'
+        required: true
+        default: 'dockerhub'
 
 jobs:
   dependencies:
@@ -90,8 +96,17 @@ jobs:
           name: dist
           path: ./dist
       - name: Authenticate Docker Registry
+        if: inputs.deployment_target == 'dockerhub'
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
       - name: Build and Push Docker Image
+        if: inputs.deployment_target == 'dockerhub'
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/rag-speech-chat:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/rag-speech-chat:latest
+      - name: Authenticate GCP
+        if: inputs.deployment_target == 'gcp'
+        run: echo "${{ secrets.GCP_KEY }}" | gcloud auth activate-service-account --key-file=-
+      - name: Build and Push to GCP Artifact Registry
+        if: inputs.deployment_target == 'gcp'
+        run: |
+          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/rag-speech-chat:latest
