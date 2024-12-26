@@ -68,7 +68,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           poetry install
-          poetry run pytest --verbose --junit-xml=junit.xml --cov --cov-report=xml test
+          poetry run pytest --verbose --junit-xml=junit.xml --cov --cov-report=xml test/unit_test.py
         env:
           DEBIAN_FRONTEND: noninteractive
           RETURN_SOURCE_DOCUMENTS: True
