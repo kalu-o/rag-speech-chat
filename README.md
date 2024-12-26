@@ -1,6 +1,6 @@
 # Rag-Speech-Chat: An End-to-End Speech Chat System
 
-This project is an end-to-end speech chat system leveraging Langchain and Retrieval-Augmented Generation (RAG). The server component is implemented in Python, encapsulated in a Docker container, and the client/frontend is built using JavaScript/HTML. Speech recognition and synthesis are handled by the client. The service is accessible via port 8000, and the development environment is managed using Poetry.
+This project is an end-to-end speech chat system leveraging Langchain and Retrieval-Augmented Generation (RAG). The server component is implemented in Python, encapsulated in a Docker container, and the client/frontend is built using JavaScript/HTML. Speech recognition and synthesis are handled by the client. The service is accessible via port 8001, and the development environment is managed using Poetry.
 
 ## Table of Contents
 
@@ -90,7 +90,7 @@ docker compose -f docker-compose.build.yml up -d --build
 
 ### Testing chat endpoint
 
-Open a web browser and navigate to `http://localhost:8000/docs` to access the fastapi interface to test a chat session.
+Open a web browser and navigate to `http://localhost:8001/docs` to access the fastapi interface to test a chat session.
 
 ### Connecting the client
 
