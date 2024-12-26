@@ -1,7 +1,7 @@
 version: '3.0'
 services:  
   rag-speech-chat:
-    image: docker.io/kaluo/rag-speech-chat:13.06.2024 
+    image: docker.io/kaluo/rag-speech-chat:latest
     environment:
       # api keys read from .env file in the root directory
       OPENAI_API_KEY: ${OPENAI_API_KEY}
@@ -15,4 +15,4 @@ services:
       TEMPERATURE: ${TEMPERATURE}
     restart: unless-stopped
     ports:
-      - 8000:8000
+      - 8001:8001

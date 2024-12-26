@@ -10,7 +10,7 @@ HOST_ALIAS = os.getenv("HOST_ALIAS", "localhost")
 
 @pytest.fixture(scope="module")
 def request_url() -> str:
-    return f"http://{HOST_ALIAS}:8000/chat"
+    return f"http://{HOST_ALIAS}:8001/chat"
 
 
 def test_request_positive(request_url):
