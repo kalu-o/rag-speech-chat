@@ -15,6 +15,6 @@ COPY data/chroma/ /tmp/
 RUN pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir --no-deps --find-links . rag_speech_chat_service
 
-EXPOSE 8000/tcp
+EXPOSE 8001/tcp
 
 ENTRYPOINT ["rag_speech_chat_service"]

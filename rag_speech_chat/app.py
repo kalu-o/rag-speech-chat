@@ -86,8 +86,8 @@ def start() -> None:
     parser.add_argument(
         "--port",
         type=int,
-        default=8000,
-        help="Webservice port (default: 8000)",
+        default=8001,
+        help="Webservice port (default: 8001)",
     )
     args = parser.parse_args()
 
