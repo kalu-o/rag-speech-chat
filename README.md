@@ -1,6 +1,8 @@
-# Rag-Speech-Chat: An End-to-End Speech Chat System
+# AskFlow: An End-to-End AI-Powered Knowledge Assistant
 
-This project is an end-to-end speech chat system leveraging Langchain and Retrieval-Augmented Generation (RAG). The server component is implemented in Python, encapsulated in a Docker container, and the client/frontend is built using JavaScript/HTML. Speech recognition and synthesis are handled by the client. The service is accessible via port 8001, and the development environment is managed using Poetry.
+**Askflow** is an end-to-end speech-powered application that leverages Retrieval-Augmented Generation (RAG), LangChain, and OpenAI's advanced models to provide instant, accurate answers from your documents. Designed to be intuitive and efficient, **Askflow** enables seamless voice-based interactions, making it easier than ever to access critical information on the go. Whether you're navigating complex data, reviewing essential materials, or simply seeking quick answers, It transforms the way you engage with your documents, ensuring knowledge is always at your fingertips.
+
+The server component is implemented in Python, encapsulated in a Docker container, and the client/frontend is built using JavaScript/HTML. Speech recognition and synthesis are handled by the client. The service is accessible via port 8001, and the development environment is managed using Poetry.
 
 ## Table of Contents
 
