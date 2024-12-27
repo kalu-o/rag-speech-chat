@@ -27,8 +27,10 @@ jobs:
         run: pip install poetry==1.8.5
       - name: Install dependencies
         run: poetry install --sync
+      - name: Install DVC
+        run: pip install dvc==3.58.0
 
-  build:
+  generate_vector_db:
     runs-on: ubuntu-latest
     needs: dependencies
     steps:
@@ -39,6 +41,36 @@ jobs:
           python-version: 3.10.15
       - name: Install Poetry
         run: pip install poetry==1.8.5
+      - name: Install DVC
+        run: pip install dvc==3.58.0
+      - name: Initialize DVC
+        run: dvc init
+      - name: Configure DVC local storage
+        run: |
+          dvc remote add -d local_storage .dvc_storage
+      - name: DVC fetch data
+        run: dvc fetch
+      - name: Run DVC stage if raw data has changed
+        run: dvc repro
+      - name: DVC pull data # Pull the data after running the stage.
+        run: dvc pull
+      - name: DVC push updated vector db to local storage
+        run: dvc push
+
+
+  build:
+    runs-on: ubuntu-latest
+    needs: generate_vector_db
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10.15
+      - name: Install Poetry
+        run: pip install poetry==1.8.5
+      - name: DVC pull data # Pull the data before the build step.
+        run: dvc pull
       - name: Build project
         run: |
           poetry build
@@ -56,7 +88,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: dependencies
+    needs: generate_vector_db
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
