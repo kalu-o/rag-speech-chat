@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const recognitionButton = document.getElementById('start-recognition');
     const recognizedText = document.getElementById('recognized-text');
     const textToSpeak = document.getElementById('text-to-speak');
-    const nluEndPoint = 'http://localhost:8000/chat';
+    const nluEndPoint = 'http://localhost:8001/chat';
 
     // Speech Recognition
     if ('webkitSpeechRecognition' in window) {
